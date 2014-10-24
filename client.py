@@ -9,15 +9,22 @@ import sys
 
 # Cliente UDP simple.
 
-# Dirección IP del servidor.
-SERVER = sys.argv[1]
-PORT = int(sys.argv[2])
+try:
+    # Dirección IP del servidor
+    SERVER = sys.argv[1]
+    PORT = int(sys.argv[2])
+    # Contenido que vamos a enviar
+    METODO = sys.argv[3]
+    DIRECCION = sys.argv[4]
+    EXPIRES = int(sys.argv[5])
+except ValueError:
+    sys.exit("Usage: client.py ip puerto register sip_address expires_value")
+except IndexError:
+    sys.exit("Usage: client.py ip puerto register sip_address expires_value")
 
-# Contenido que vamos a enviar
-METODO = sys.argv[3]
-DIRECCION = sys.argv[4]
 if METODO == "register":
         LINE = 'REGISTER' + ' sip:' + DIRECCION + ' SIP/1.0\r\n\r\n'
+        LINE += 'Expires: ' + str(EXPIRES) +'\r\n\r\n'
 
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
