@@ -12,20 +12,6 @@ import time
 clientes = {}
 
 
-def register2file(clientes):
-
-    #Vuelco el diccionario
-    fich = open('registered.txt', 'w')
-    fich.write('User\tIP\tExpires\r\n')
-    for cliente in clientes:
-        localhost = clientes[cliente][0][0]
-        caducidad = int(clientes[cliente][1])
-        cadena = cliente + '\t' + localhost + '\t'
-        cadena += time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(caducidad))
-        cadena += '\r\n'
-        fich.write(cadena)
-
-
 class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     """
     Echo server class
@@ -60,13 +46,26 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
                     self.wfile.write('SIP/1.0 200 OK\r\n\r\n')
                     #Entra cliente
                     clientes[direccion] = [self.client_address, caducidad]
-                    register2file(clientes)
+                    self.register2file(clientes)
                     #Se da de baja cliente
                     if expires == 0:
                         del clientes[direccion]
-                        register2file(clientes)
+                        self.register2file(clientes)
             else:
                 break
+
+    def register2file(self, clientes):
+
+        #Vuelco el diccionario
+        fich = open('registered.txt', 'w')
+        fich.write('User\tIP\tExpires\r\n')
+        for cliente in clientes:
+            localhost = clientes[cliente][0][0]
+            caduc = int(clientes[cliente][1])
+            cadena = cliente + '\t' + localhost + '\t'
+            cadena += time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(caduc))
+            cadena += '\r\n'
+            fich.write(cadena)
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
