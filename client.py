@@ -24,8 +24,7 @@ except IndexError:
 
 if METODO == "register":
         LINE = 'REGISTER' + ' sip:' + DIRECCION + ' SIP/1.0\r\n\r\n'
-        LINE += 'Expires: ' + str(EXPIRES) +'\r\n\r\n'
-
+        LINE += 'Expires: ' + str(EXPIRES) + '\r\n\r\n'
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
