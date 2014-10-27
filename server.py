@@ -17,24 +17,22 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     Echo server class
     """
     def handle(self):
-
+        """
+        Actualiza y modifica el diccionario cada vez que recibe REGISTER
+        """
         #Actualizo el diccionario
         for cliente in clientes.keys():
             caducidad = int(clientes[cliente][1])
             if caducidad <= time.time():
                 del clientes[cliente]
-
-        # Escribe dirección y puerto del cliente (de tupla client_address)
         print self.client_address
         self.wfile.write("Hemos recibido tu peticion ")
         while 1:
-
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             if line != "":
                 print "El cliente nos manda " + line
 
-                #Guarda parámetros
                 troceo = line.split()
                 metodo = troceo[0]
                 direccion = troceo[1].split(':')[1]
@@ -55,8 +53,9 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
                 break
 
     def register2file(self, clientes):
-
-        #Vuelco el diccionario
+        """
+        Vuelca el diccionario en el fichero registered.txt
+        """
         fich = open('registered.txt', 'w')
         fich.write('User\tIP\tExpires\r\n')
         for cliente in clientes:
@@ -68,7 +67,9 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
             fich.write(cadena)
 
 if __name__ == "__main__":
-    # Creamos servidor de eco y escuchamos
+    """
+    Creamos servidor de eco y escuchamos
+    """
     PORT = int(sys.argv[1])
     serv = SocketServer.UDPServer(("", PORT), SIPRegisterHandler)
     print "Lanzando servidor UDP de eco..."
