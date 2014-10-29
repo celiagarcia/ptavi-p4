@@ -41,7 +41,7 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
 
                 #REGISTER
                 if metodo == 'REGISTER':
-                    self.wfile.write('SIP/1.0 200 OK\r\n\r\n')
+                    self.wfile.write('SIP/2.0 200 OK\r\n\r\n')
                     #Entra cliente
                     clientes[direccion] = [self.client_address, caducidad]
                     self.register2file(clientes)
