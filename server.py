@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 """
-Clase (y programa principal) para un servidor de eco
-en UDP simple
+Clase (y programa principal) para un servidor register sip
 """
 
 import SocketServer
@@ -14,7 +13,7 @@ clientes = {}
 
 class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
     """
-    Echo server class
+    SIP Register server class
     """
     def handle(self):
         """
@@ -26,7 +25,6 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
             if caducidad <= time.time():
                 del clientes[cliente]
         print self.client_address
-        self.wfile.write("Hemos recibido tu peticion ")
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
@@ -68,9 +66,9 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
 
 if __name__ == "__main__":
     """
-    Creamos servidor de eco y escuchamos
+    Creamos servidor de register sip y escuchamos
     """
     PORT = int(sys.argv[1])
     serv = SocketServer.UDPServer(("", PORT), SIPRegisterHandler)
-    print "Lanzando servidor UDP de eco..."
+    print "Lanzando servidor REGISTER SIP..."
     serv.serve_forever()
